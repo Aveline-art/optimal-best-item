@@ -10,7 +10,7 @@ class Experiment:
         self.wins = {}
         pass
 
-    def find_victories(self, team, team_index, games=20):
+    def find_victories(self, team, team_index, games=5):
         victory_count = 0
         seen_team_index = [team_index]
         for i in range(games):
@@ -24,7 +24,7 @@ class Experiment:
             winner_idx = self.determine_winner(
                 team, opponent_team, team_index, opponent_team_idx
             )
-            if winner_idx == team:
+            if winner_idx == team_index:
                 victory_count += 1
         self.wins[team_index] = victory_count
 
