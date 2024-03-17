@@ -5,8 +5,8 @@ In experiment 1, I will simulate match up between random "teams". Each team will
 Result from brute force algorithm:
 About 92% accurate with these parameters:
 
-- There are 20 actual best teams, from a total teams of 120 teams (17% of teams are the best)
-- For each team, we perform 5 games against a different team each\*. If a team wins, they score 1 point.
-- We obtain the top 40 teams after the tallying the scores.
+- There are 20 actual best teams, from a total teams of 120 teams (17% of teams are the best).
+- For each team, we perform 5 games (4% of total comparisons) against a different team each\*. If a team wins, they score 1 point.
+- We obtain the top 40 teams after the tallying the scores. (33% of total teams)
 
 \*Note that we consider match (teamA, teamB) to be different from (teamB, teamA). This is a bug for now, but once fix, should only increase, rather than decrease accuracy.
