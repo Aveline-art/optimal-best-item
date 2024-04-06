@@ -54,6 +54,9 @@ def main():
     print(
         f"After {num_trials_to_run} trials, this strategy would generate a list of best teams that contains {statistics.fmean(results) * 100}% of items from the actual list of best teams."
     )
+    print(
+        f"If this was done using AI, this would take {num_rounds_per_team * num_total_teams} API calls per {num_total_teams} teams."
+    )
 
 
 def choose_opponents_func(
