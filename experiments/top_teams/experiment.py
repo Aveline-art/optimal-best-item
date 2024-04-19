@@ -1,10 +1,10 @@
 import random
-
 from collections.abc import Callable
 from dataclasses import dataclass
 
 TeamName = str
-Teams = dict[TeamName, any]
+TeamData = any
+Teams = dict[TeamName, TeamData]
 
 
 class Experiment:
@@ -13,16 +13,10 @@ class Experiment:
         self,
         teams: Teams,
         best_teams: list[TeamName],
-        choose_opponents_func: Callable[
-            [TeamName, Teams, list[TeamName]], list[TeamName]
-        ],
-        evaluate_winner_func: Callable[[Teams], tuple[list[TeamName], list[TeamName]]],
         num_of_matches_per_team: int,
     ):
         self.teams = teams
         self.best_teams = best_teams
-        self.choose_opponents_func = choose_opponents_func
-        self.evaluate_winners = evaluate_winner_func
         self.num_of_matches_per_team = num_of_matches_per_team
         self.wins = {key: 0 for key in self.teams.keys()}
 
@@ -33,7 +27,7 @@ class Experiment:
                 competitors_for_round = {current_team: team_data}
 
                 # Choose opponents
-                opponent_names = self.choose_opponents_func(
+                opponent_names = self.choose_opponents(
                     current_team, self.teams, past_losers
                 )
 
@@ -42,7 +36,7 @@ class Experiment:
                     competitors_for_round[opponent_name] = self.teams[opponent_name]
 
                 # Determine a list of winners and losers
-                winners, losers = self.evaluate_winners(competitors_for_round)
+                winners, losers = self.evaluate_winner(competitors_for_round)
                 past_losers += losers
                 for winner in winners:
                     self.wins[winner] += 1
@@ -58,12 +52,22 @@ class Experiment:
         top_names = [name for name, _ in sorted_teams[:top_count]]
         return top_names
 
-    def algorithm_effectiveness(self, optimal_result, actual_result):
-        total_result = len(optimal_result)
-        for item in actual_result:
-            try:
-                optimal_result.remove(item)
-            except:
-                continue
-        leftover_result = len(optimal_result)
-        return 1 - (leftover_result / total_result)
+    def algorithm_effectiveness(self, actual_result: list[TeamName]):
+        score = 0
+        for team in actual_result:
+            if team in self.best_teams:
+                score += 1
+        return score / len(actual_result)
+
+    def choose_opponents(
+        self,
+        current_team: TeamName,
+        all_teams: dict[TeamName, TeamData],
+        past_losers: list[TeamName],
+    ) -> list[TeamName]:
+        raise NotImplementedError
+
+    def evaluate_winner(
+        self, teams: dict[TeamName, TeamData]
+    ) -> tuple[list[TeamName], list[TeamName]]:
+        raise NotImplementedError
