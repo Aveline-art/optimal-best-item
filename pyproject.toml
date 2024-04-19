@@ -7,9 +7,21 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-experiment-utils = {path = "utils"}
+experiment-utils = {path = "src/utils"}
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
+pythonpath = "src"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
