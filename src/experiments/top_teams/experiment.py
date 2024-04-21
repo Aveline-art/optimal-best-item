@@ -53,6 +53,8 @@ class Experiment:
         return top_names
 
     def algorithm_effectiveness(self, actual_result: list[TeamName]):
+        if len(actual_result) == 0:
+            return 0
         score = 0
         for team in actual_result:
             if team in self.best_teams:

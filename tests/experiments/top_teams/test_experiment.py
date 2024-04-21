@@ -47,6 +47,9 @@ class TestExperiment:
         assert experiment.num_of_matches_per_team == 1
         assert experiment.wins == {"a": 0, "b": 0, "c": 0}
 
+        experiment = get_experiment(3)
+        assert experiment.num_of_matches_per_team == 3
+
     def test_top_teams(self, get_experiment, get_wins_and_top_teams):
         wins, top_teams = get_wins_and_top_teams(10, 20)
         experiment = get_experiment(1)
@@ -54,3 +57,29 @@ class TestExperiment:
         assert experiment.determine_top_teams(10) == top_teams
         assert experiment.determine_top_teams(5) == top_teams[:5]
         assert experiment.determine_top_teams(4) != top_teams[:5]
+
+    def test_algorithm_effectiveness(self, get_experiment, demo_best_team):
+        experiment = get_experiment(1)
+        actual_result = demo_best_team.copy()
+        assert experiment.algorithm_effectiveness(actual_result) == 2 / 2
+
+        actual_result.append("c")
+        assert experiment.algorithm_effectiveness(actual_result) == 2 / 3
+
+        actual_result.pop(0)
+        assert experiment.algorithm_effectiveness(actual_result) == 1 / 2
+
+        actual_result.extend(["d", "e", "f"])
+        assert experiment.algorithm_effectiveness(actual_result) == 1 / 5
+
+        actual_result.append("a")
+        assert experiment.algorithm_effectiveness(actual_result) == 2 / 6
+
+    def test_not_implemeneted(self, get_experiment, demo_team_data):
+        experiment = get_experiment(10)
+
+        with pytest.raises(NotImplementedError):
+            experiment.choose_opponents("a", demo_team_data, ["b"])
+
+        with pytest.raises(NotImplementedError):
+            experiment.evaluate_winner(demo_team_data)
