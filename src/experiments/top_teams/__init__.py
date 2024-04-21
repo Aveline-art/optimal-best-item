@@ -1,1 +1,1 @@
-from top_teams.top_teams_a import TopTeamsA
+from .top_teams_a import TopTeamsA

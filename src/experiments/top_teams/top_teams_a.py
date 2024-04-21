@@ -2,7 +2,8 @@ import random
 from dataclasses import dataclass
 
 from experiment_utils.random_data import get_data
-from top_teams.experiment import Experiment, TeamData, TeamName
+
+from .experiment import Experiment, TeamData, TeamName
 
 
 class TopTeamsA(Experiment):
